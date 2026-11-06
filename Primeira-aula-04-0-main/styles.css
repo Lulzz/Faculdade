@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #121212;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.profile-card {
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  width: 360px;
+  padding: 40px 30px 50px;
+  box-shadow: 0 0 25px #b30000cc;
+  text-align: center;
+}
+
+.profile-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 4px solid #ff1a1a;
+  object-fit: cover;
+  margin: 0 auto 30px;
+  box-shadow: 0 0 15px #ff1a1a;
+  transition: box-shadow 0.3s ease;
+}
+
+.profile-image:hover {
+  box-shadow: 0 0 30px #ff4d4d;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 15px;
+  color: #ff2a2a;
+  text-shadow: 0 0 10px #ff0000bb;
+  letter-spacing: 1.5px;
+}
+
+p.bio {
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #ddd;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #b30000;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 14px 0;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px #b3000022;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-links a:hover {
+  background-color: #ff0000;
+  box-shadow: 0 6px 20px #ff000055;
+}
+
+/* Ícones simples */
+.contact-links a .icon {
+  font-size: 1.4rem;
+}
+
+footer {
+  margin-top: 45px;
+  font-size: 0.85rem;
+  color: #770000bb;
+  user-select: none;
+}
+
+/* Responsivo */
+@media (max-width: 400px) {
+  .profile-card {
+    width: 100%;
+    padding: 30px 20px 40px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}

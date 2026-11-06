@@ -1,0 +1,86 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+header, footer {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  color: #007acc;
+}
+
+.personagens-imagens {
+  margin-bottom: 40px;
+}
+
+.imagens-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.imagens-grid img {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.imagens-grid img:hover {
+  transform: scale(1.1);
+}
+
+.lista-personagens ul {
+  list-style: none;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.lista-personagens li {
+  background-color: #fff;
+  border: 2px solid #007acc;
+  border-radius: 10px;
+  padding: 15px 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.lista-personagens h3 {
+  color: #007acc;
+  margin-bottom: 10px;
+}
+
+.lista-personagens p {
+  margin-bottom: 8px;
+}
+
+.lista-personagens a {
+  color: #005f99;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.lista-personagens a:hover {
+  text-decoration: underline;
+}
+
+footer p {
+  font-size: 0.9rem;
+  color: #666;
+}
