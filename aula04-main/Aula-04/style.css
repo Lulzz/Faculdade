@@ -1,0 +1,108 @@
+:root{
+  --bg:#0b0c10;
+  --card:#111318;
+  --text:#e9eef5;
+  --muted:#9aa3ad;
+  --accent:#5aa9e6;
+  --accent-2:#7fd1ae;
+  --danger:#ff6b6b;
+  --border:#222633;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji",sans-serif;
+  line-height:1.5;
+}
+
+.container{
+  max-width:880px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.header h1{margin:0 0 6px}
+.subtitle{margin:0 0 20px;color:var(--muted)}
+
+.label{display:block;margin:12px 0 8px;font-weight:600}
+.input{
+  width:100%;
+  padding:12px 14px;
+  background:#0f1117;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:14px;
+  resize:vertical;
+}
+
+.hint{margin:6px 2px 0;color:var(--muted);font-size:.92rem}
+.hint code{background:#0d0f14;padding:2px 6px;border-radius:8px;border:1px solid var(--border)}
+
+.actions{
+  display:flex;gap:10px;align-items:center;margin:14px 0 0;
+}
+
+.btn{
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#0f121a;
+  color:var(--text);
+  cursor:pointer;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  border-color:transparent;
+  color:#0b1020;
+  font-weight:700;
+}
+
+.card{
+  margin-top:22px;
+  padding:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+h2{margin:0 0 14px}
+h3{margin:0 0 6px;font-size:1rem;color:var(--muted)}
+
+.mono{font-family:ui-monospace,Consolas,Menlo,monospace}
+.muted{color:var(--muted)}
+
+.summary{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:12px
+}
+.pill{
+  border:1px solid var(--border);
+  background:#0f121a;
+  padding:8px 12px;border-radius:999px
+}
+.pill.highlight{
+  background:linear-gradient(135deg,#1a2030,#0f1626);
+  border-color:#2a3245;
+}
+
+.error{
+  margin-top:12px;
+  padding:10px 12px;
+  border:1px solid #642b2b;
+  background:#2a0f12;
+  color:var(--danger);
+  border-radius:12px;
+}
+
+.footer{margin-top:18px;color:var(--muted)}

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisador de Gramáticas Regulares</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --surface: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --border-color: #e2e8f0;
+            --border-radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        h2, h3 {
+            color: #1e293b;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h3::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .grid { display: grid; gap: 20px; }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+        .form-group { margin-bottom: 20px; }
+        
+        label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f8fafc;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        textarea { height: 130px; resize: vertical; }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background-color: #f8fafc;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: white;
+        }
+        
+        th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        
+        th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f1f5f9; }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-terminal { background: #dbeafe; color: #1d4ed8; }
+        .badge-naoterminal { background: #fef3c7; color: #b45309; }
+
+        .output-box {
+            background: #0f172a;
+            color: #a5b4fc;
+            padding: 24px;
+            border-radius: 12px;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            font-size: 14.5px;
+            border-left: 6px solid var(--primary);
+            margin-top: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .output-box b { color: #fff; }
+        
+        .error-msg {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--danger);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+            .btn-group { flex-direction: column; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Linguagens Formais</h1>
+    <p class="subtitle">Analisador e Derivador de Gramáticas Regulares (Linear à Direita)</p>
+
+    <div class="form-group">
+        <label for="example-select">📚 Gramáticas de Exemplo Prontas:</label>
+        <select id="example-select" onchange="loadExample()">
+            <option value="">-- Personalizado (Digite abaixo) --</option>
+            <option value="1">Exemplo 1: (a*ab) - Letras</option>
+            <option value="2">Exemplo 2: (0*11*0) - Números</option>
+            <option value="3">Exemplo 3: (1(2+3)*4) - Números com ramificação</option>
+        </select>
+    </div>
+
+    <div class="grid grid-3">
+        <div class="form-group">
+            <label>Não Terminais (N):</label>
+            <input type="text" id="input-n" placeholder="Ex: S, A, B">
+        </div>
+        <div class="form-group">
+            <label>Terminais (T):</label>
+            <input type="text" id="input-t" placeholder="Ex: a, b, 0, 1, 2">
+        </div>
+        <div class="form-group">
+            <label>Símbolo Inicial (S):</label>
+            <input type="text" id="input-s" placeholder="Ex: S">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Produções (P) <span style="font-weight:400; color:#64748b;">(Formato: S -> 1S | 2A | 3 | e)</span>:</label>
+        <textarea id="input-p" placeholder="S -> 1S | 2A"></textarea>
+    </div>
+
+    <div id="validation-msg"></div>
+
+    <div class="btn-group">
+        <button class="btn-primary" onclick="executarDerivacao()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Derivar 1 Sentença (Pilha)
+        </button>
+        <button class="btn-secondary" onclick="gerarVariasSentencas()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            Gerar 5 Aleatórias
+        </button>
+        <button class="btn-primary" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="gerarExpressaoRegular()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            Gerar Regex
+        </button>
+    </div>
+
+    <div id="derivacao-container" style="display: none; animation: fadeIn 0.5s ease-out;">
+        <h3>Mecanismo de Derivação (Uso da Pilha)</h3>
+        
+        <div class="table-container">
+            <table id="tabela-derivacao">
+                <thead>
+                    <tr>
+                        <th>Passo</th>
+                        <th>Topo</th>
+                        <th>Tipo</th>
+                        <th>Ação Executada</th>
+                        <th>Estado da Pilha (Base → Topo)</th>
+                        <th>Sentença Gerada</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="output-box" id="resultado-sentenca"></div>
+    </div>
+
+    <div id="regex-container" style="display: none; animation: fadeIn 0.5s ease-out;">
+        <h3>Transformação em Expressão Regular</h3>
+        <div class="output-box" id="output-regex"></div>
+    </div>
+</div>
+
+<script>
+    const examples = {
+        "1": { n: "S", t: "a, b", s: "S", p: "S -> aS | ab" },
+        "2": { n: "S, A", t: "0, 1", s: "S", p: "S -> 0S | 1A\nA -> 1A | 0" },
+        "3": { n: "S, A", t: "1, 2, 3, 4", s: "S", p: "S -> 1A\nA -> 2A | 3A | 4" }
+    };
+
+    function loadExample() {
+        const val = document.getElementById('example-select').value;
+        if (val && examples[val]) {
+            document.getElementById('input-n').value = examples[val].n;
+            document.getElementById('input-t').value = examples[val].t;
+            document.getElementById('input-s').value = examples[val].s;
+            document.getElementById('input-p').value = examples[val].p;
+            document.getElementById('validation-msg').innerHTML = "";
+        }
+    }
+
+    function parseGrammar() {
+        const N = document.getElementById('input-n').value.split(',').map(s => s.trim()).filter(s => s);
+        const T = document.getElementById('input-t').value.split(',').map(s => s.trim()).filter(s => s);
+        const S = document.getElementById('input-s').value.trim();
+        const pLines = document.getElementById('input-p').value.split('\n').filter(s => s.trim());
+        const P = {};
+        
+        pLines.forEach(line => {
+            const parts = line.split('->');
+            if (parts.length === 2) {
+                const left = parts[0].trim();
+                const rightRules = parts[1].split('|').map(s => s.trim());
+                P[left] = rightRules;
+            }
+        });
+        return { N, T, S, P };
+    }
+
+    function validarGramaticaRegular(G) {
+        const msgBox = document.getElementById('validation-msg');
+        let isValid = true;
+        let erros = [];
+
+        for (let nt in G.P) {
+            G.P[nt].forEach(regra => {
+                for (let i = 0; i < regra.length; i++) {
+                    const char = regra[i];
+                    if (G.N.includes(char) && i !== regra.length - 1) {
+                        isValid = false;
+                        erros.push(`A regra '${nt} -> ${regra}' não é Linear à Direita.`);
+                    }
+                }
+            });
+        }
+
+        if (!isValid) {
+            msgBox.innerHTML = `<div class="error-msg">⚠️ <b>Aviso:</b> A gramática parece não ser estritamente Regular.<br>${erros.join('<br>')}</div>`;
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function executarDerivacao() {
+        document.getElementById('derivacao-container').style.display = 'block';
+        document.getElementById('regex-container').style.display = 'none';
+        
+        const G = parseGrammar();
+        validarGramaticaRegular(G);
+        const tbody = document.querySelector('#tabela-derivacao tbody');
+        tbody.innerHTML = ""; 
+        
+        if (!G.S || !G.P[G.S]) {
+            document.getElementById('resultado-sentenca').innerHTML = "Erro: Símbolo inicial inválido.";
+            return;
+        }
+
+        let pilha = [G.S];
+        let saida = "";
+        let iteracoes = 0;
+        let passo = 1;
+        const maxIteracoes = 100;
+
+        const renderPilha = (p) => p.map(x => `[${x}]`).join('');
+
+        while (pilha.length > 0 && iteracoes < maxIteracoes) {
+            let topo = pilha.pop();
+            let tr = document.createElement('tr');
+            let tipo, acao;
+
+            if (G.N.includes(topo)) {
+                tipo = '<span class="badge badge-naoterminal">Não Terminal</span>';
+                const producoes = G.P[topo];
+                
+                if (!producoes) {
+                    acao = `<span style="color:#ef4444">Erro</span>`;
+                } else {
+                    const prodEscolhida = producoes[Math.floor(Math.random() * producoes.length)];
+                    acao = `Derivou: <b>${topo} → ${prodEscolhida}</b>`;
+                    for (let i = prodEscolhida.length - 1; i >= 0; i--) {
+                        if (prodEscolhida[i] !== 'e' && prodEscolhida[i] !== ' ') {
+                            pilha.push(prodEscolhida[i]);
+                        }
+                    }
+                }
+            } else {
+                tipo = '<span class="badge badge-terminal">Terminal</span>';
+                acao = `Adicionado à saída`;
+                saida += topo;
+            }
+
+            tr.innerHTML = `
+                <td>${passo++}</td>
+                <td><strong>${topo}</strong></td>
+                <td>${tipo}</td>
+                <td>${acao}</td>
+                <td style="font-family:'Fira Code', monospace; letter-spacing:2px; color:#4f46e5;">${renderPilha(pilha) || 'Vazia'}</td>
+                <td style="color: #059669; font-weight: 700; font-family:'Fira Code', monospace;">${saida}</td>
+            `;
+            tbody.appendChild(tr);
+            iteracoes++;
+        }
+
+        const resBox = document.getElementById('resultado-sentenca');
+        resBox.innerHTML = `✅ Derivação concluída!\n\nSentença final gerada:\n> <b>${saida}</b>`;
+    }
+
+    function gerarVariasSentencas() {
+        const G = parseGrammar();
+        if (!validarGramaticaRegular(G)) return;
+
+        let sentencas = new Set();
+        let tentativas = 0;
+
+        while(sentencas.size < 5 && tentativas < 50) {
+            let pilha = [G.S];
+            let saida = "";
+            let iter = 0;
+            
+            while(pilha.length > 0 && iter < 100) {
+                let topo = pilha.pop();
+                
+                if (G.N.includes(topo)) {
+                    if (G.P[topo]) {
+                        let prods = G.P[topo];
+                        let p = prods[Math.floor(Math.random() * prods.length)];
+                        for (let i = p.length - 1; i >= 0; i--) {
+                            if (p[i] !== 'e' && p[i] !== ' ') pilha.push(p[i]);
+                        }
+                    }
+                } else {
+                    saida += topo;
+                }
+                iter++;
+            }
+            if(pilha.length === 0) sentencas.add(saida);
+            tentativas++;
+        }
+
+        document.getElementById('derivacao-container').style.display = 'block';
+        document.getElementById('regex-container').style.display = 'none';
+        document.querySelector('#tabela-derivacao tbody').innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px;">Execução rápida em background concluída. Veja o resultado abaixo.</td></tr>`;
+        
+        let textoFinal = "🎲 5 Sentenças Aleatórias Geradas:\n\n";
+        Array.from(sentencas).forEach((s, i) => textoFinal += `   ${i+1}. <b>${s}</b>\n`);
+        document.getElementById('resultado-sentenca').innerHTML = textoFinal;
+    }
+
+    function gerarExpressaoRegular() {
+        document.getElementById('regex-container').style.display = 'block';
+        document.getElementById('derivacao-container').style.display = 'none';
+        
+        const G = parseGrammar();
+        const outBox = document.getElementById('output-regex');
+        let log = "=== SISTEMA DE EQUAÇÕES ===\n\n";
+
+        let equacoes = {};
+        G.N.forEach(nt => {
+            if (G.P[nt]) {
+                equacoes[nt] = [...G.P[nt]];
+                log += `   ${nt} = ${equacoes[nt].join(' + ')}\n`;
+            }
+        });
+
+        log += "\n=== APLICAÇÃO DO LEMA DE ARDEN ===\n";
+        log += "Regra: Se X = aX + b, então X = a*b\n\n";
+
+        let resolvidas = {};
+        let variaveis = Object.keys(equacoes).reverse(); 
+
+        for (let i = 0; i < variaveis.length; i++) {
+            let V = variaveis[i];
+            let termos = equacoes[V];
+            
+            let novosTermos = [];
+            termos.forEach(termo => {
+                let substituido = termo;
+                for (let resV in resolvidas) {
+                    if (substituido.includes(resV)) {
+                        let expr = resolvidas[resV];
+                        if(expr.includes('+')) expr = `(${expr})`;
+                        substituido = substituido.replace(resV, expr);
+                    }
+                }
+                novosTermos.push(substituido);
+            });
+            termos = novosTermos;
+
+            let alfa = []; 
+            let beta = []; 
+
+            termos.forEach(termo => {
+                if (termo.endsWith(V)) alfa.push(termo.slice(0, -1)); 
+                else beta.push(termo);
+            });
+
+            let strAlfa = alfa.join(' + ');
+            let strBeta = beta.join(' + ');
+            let exprFinal = "";
+
+            if (alfa.length > 0) {
+                let formAlfa = alfa.length > 1 ? `(${strAlfa})*` : `${strAlfa}*`;
+                let formBeta = beta.length > 1 ? `(${strBeta})` : `${strBeta}`;
+                
+                // CORREÇÃO: Remove o 'e' (Epsilon) na concatenação, pois atua como elemento neutro.
+                if (formBeta === "e") {
+                    formBeta = "";
+                }
+                
+                exprFinal = formBeta === "" ? formAlfa : `${formAlfa}${formBeta}`;
+            } else {
+                exprFinal = beta.length > 1 ? `(${strBeta})` : strBeta;
+            }
+
+            resolvidas[V] = exprFinal;
+            log += `-> Resolvendo <b>${V}</b>:\n`;
+            log += `   Equação   : ${V} = ${termos.join(' + ')}\n`;
+            log += `   Lema Arden: ${V} = <b>${exprFinal}</b>\n\n`;
+        }
+
+        let regexFinal = resolvidas[G.S] || "Erro";
+        log += "===================================\n";
+        log += `🚀 EXPRESSÃO REGULAR FINAL (Símbolo ${G.S}):\n\n`;
+        log += `>> <b>${regexFinal}</b> <<\n`;
+
+        outBox.innerHTML = log;
+    }
+
+    window.onload = () => {
+        document.getElementById('example-select').value = "1";
+        loadExample();
+    };
+</script>
+
+</body>
+</html>

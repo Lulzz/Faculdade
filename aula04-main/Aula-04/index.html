@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Exercício 1 — Soma dos Pares</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>Exercício 1 — Soma dos números pares</h1>
+        <p class="subtitle">
+          Digite números inteiros separados por vírgula, espaço, ponto e vírgula ou quebra de linha.
+        </p>
+      </header>
+
+      <form id="sum-form" novalidate>
+        <label for="numbers" class="label">Números</label>
+        <textarea
+          id="numbers"
+          class="input"
+          rows="4"
+          placeholder="Ex.: 1, 2, 3, 4, 5, 6"
+          aria-describedby="hint"
+        ></textarea>
+        <div id="hint" class="hint">
+          Aceita: <code>1 2 3 4</code>, <code>1,2,3,4</code>, <code>1; 2; 3</code> ou linhas separadas.
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Calcular</button>
+          <button type="reset" class="btn" id="btn-clear">Limpar</button>
+        </div>
+      </form>
+
+      <section id="results" class="card" aria-live="polite">
+        <h2>Resultado</h2>
+        <div class="grid">
+          <div>
+            <h3>Entrada válida</h3>
+            <p id="parsed-list" class="mono muted">—</p>
+          </div>
+          <div>
+            <h3>Números pares considerados</h3>
+            <p id="even-list" class="mono muted">—</p>
+          </div>
+        </div>
+        <div class="summary">
+          <div class="pill">
+            Quantidade total: <span id="count-total">0</span>
+          </div>
+          <div class="pill">
+            Quantidade pares: <span id="count-even">0</span>
+          </div>
+          <div class="pill highlight">
+            Soma dos pares: <span id="sum-even">0</span>
+          </div>
+        </div>
+        <p id="errors" class="error" hidden></p>
+      </section>
+
+      <footer class="footer">
+        <small>
+          Versão web do exercício “Olá NPM”: em vez de argumentos no Node, usamos entradas do usuário no navegador.
+        </small>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

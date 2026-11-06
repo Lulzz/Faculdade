@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caminho Mais Barato</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <span class="badge">Teoria de Grafos</span>
+      <h1>Caminho Mais Barato</h1>
+      <p>Calcule a rota de menor custo considerando combustível e pedágios.</p>
+    </section>
+
+    <section class="card">
+      <form id="formBusca" class="form">
+        <div class="field">
+          <label for="origem">Capital de origem</label>
+          <select id="origem" required></select>
+        </div>
+
+        <div class="field">
+          <label for="destino">Capital de destino</label>
+          <select id="destino" required></select>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="preco">Preço do combustível (R$)</label>
+            <input type="number" id="preco" step="0.01" min="0" placeholder="Ex.: 5.79" required />
+          </div>
+
+          <div class="field">
+            <label for="autonomia">Autonomia (km/L)</label>
+            <input type="number" id="autonomia" step="0.1" min="0" placeholder="Ex.: 12" required />
+          </div>
+        </div>
+
+        <button type="submit">Calcular rota</button>
+      </form>
+
+      <section id="resultado" class="resultado vazio">
+        Preencha os campos e clique em “Calcular rota”.
+      </section>
+    </section>
+
+    <section class="card">
+      <h2 class="titulo-grafo">Grafo — vértices e adjacentes</h2>
+      <div id="grafo"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

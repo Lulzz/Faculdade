@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Graus de Network</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎬 8 Graus de Network</h1>
+
+        <input
+            id="origin"
+            list="actors"
+            placeholder="Ator de origem">
+
+        <input
+            id="destination"
+            list="actors"
+            placeholder="Ator de destino">
+
+        <datalist id="actors"></datalist>
+
+        <button onclick="findConnection()">
+            BFS Menor Caminho
+        </button>
+
+        <button onclick="findAllConnections()">
+            BFS Até 8 Graus
+        </button>
+
+        <pre id="result"></pre>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
